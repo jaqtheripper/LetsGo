@@ -1,0 +1,14 @@
+services:
+  database:
+    image: mysql:8.0
+    restart: always
+    ports:
+      - "3396:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+
+volumes:
+  mysql_data:
+    driver: local
