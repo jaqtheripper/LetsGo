@@ -6,7 +6,6 @@ import (
 	"jaqtheripper/LetsGo/internal/models"
 	"net/http"
 	"strconv"
-	// "text/template"
 )
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
@@ -16,14 +15,33 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		app.serverError(w, r, err)
 		return
 	}
-	for _, snippet := range snippets {
-		fmt.Fprintf(w, "%+v\n", snippet)
-	}
+	// for _, snippet := range snippets {
+	// 	fmt.Fprintf(w, "%+v\n", snippet)
+	// }
 	// files := []string{
 	// 	"ui/html/base.tmpl.html",
 	// 	"ui/html/pages/home.tmpl.html",
 	// 	"ui/html/partials/nav.tmpl.html",
 	// }
+
+	// ts, err := template.ParseFiles(files...)
+	// if err != nil {
+	// 	app.serverError(w, r, err)
+	// 	return
+	// }
+	// data := templateData{
+	// 	Snippets: snippets,
+	// }
+	// err = ts.ExecuteTemplate(w, "base", data)
+	// if err != nil {
+	// 	app.serverError(w, r, err)
+	// }
+
+	data := app.newTemplateData(r)
+	data.Snippets = snippets
+
+	app.render(w, r, http.StatusOK, "home.tmpl.html", data)
+
 	// ts, err := template.ParseFiles(files...)
 	// if err != nil {
 	// 	app.serverError(w, r, err)
@@ -55,7 +73,30 @@ func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-	fmt.Fprintf(w, "%+v", snippet)
+	// files := []string{
+	// 	"./ui/html/base.tmpl.html",
+	// 	"./ui/html/partials/nav.tmpl.html",
+	// 	"./ui/html/pages/view.tmpl.html",
+	// }
+	// ts, err := template.ParseFiles(files...)
+	// if err != nil {
+	// 	app.serverError(w, r, err)
+	// 	return
+	// }
+	// data := templateData{
+	// 	Snippet: snippet,
+	// }
+	// err = ts.ExecuteTemplate(w, "base", data)
+	// if err != nil {
+	// 	app.serverError(w, r, err)
+	// }
+
+	data := app.newTemplateData(r)
+	data.Snippet = snippet
+
+	app.render(w, r, http.StatusOK, "view.tmpl.html", data)
+
+	// fmt.Fprintf(w, "%+v", snippet)
 }
 
 func (app *application) snippetCreate(w http.ResponseWriter, r *http.Request) {
